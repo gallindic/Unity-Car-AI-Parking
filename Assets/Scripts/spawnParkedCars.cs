@@ -9,34 +9,33 @@ public class spawnParkedCars : MonoBehaviour
     public GameObject[] parkedCars;
     public GameObject[] parkingSpots;
     public GameObject targetSpot;
-    private List<int> used = new List<int>{};
+    private List<int> used;
     private System.Random rnd = new System.Random();
+    
+    private int spots = 12;
 
-    void Start()
-    {
-        foreach (GameObject parkedCar in parkedCars) {
-	  GameObject parkingSpot = getRandomSpot();
-	  parkedCar.transform.position = parkingSpot.transform.position;
-	  
-	  int rotate = rnd.Next(0, 2);
-	  
-	  if(rotate == 1) {
-	  	parkedCar.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-	  }
-	}
+	public void RandomizeCars() {
+		used = new List<int>{};
+		
+		foreach (GameObject parkedCar in parkedCars) {
+			GameObject parkingSpot = getRandomSpot();
+			parkedCar.transform.position = parkingSpot.transform.position;
+			
+			parkedCar.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+		}
 	
-	GameObject targetPos = getRandomSpot();
-	targetSpot.transform.position = targetPos.transform.position;
-	targetSpot.transform.position = new Vector3(targetSpot.transform.position.x, targetSpot.transform.position.y + 0.025f, targetSpot.transform.position.z);
-    }
+		GameObject targetPos = getRandomSpot();
+		targetSpot.transform.position = targetPos.transform.position;
+		targetSpot.transform.position = new Vector3(targetSpot.transform.position.x, targetSpot.transform.position.y + 0.2f, targetSpot.transform.position.z);
+	}
     
     GameObject getRandomSpot() {
-    	int spot = rnd.Next(0, 13);
+    	int spot = rnd.Next(0, spots);
     	
     	while(used.Contains(spot)) {
-    	    spot = rnd.Next(0, 13);
+    	    spot = rnd.Next(0, spots);
     	}
-    	
+
     	used.Add(spot);
     	
     	return parkingSpots[spot];
@@ -51,11 +50,5 @@ public class spawnParkedCars : MonoBehaviour
     	}
     	
     	return false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
